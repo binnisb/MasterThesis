@@ -1,0 +1,56 @@
+\documentclass[a4paper,11pt]{kth-mag}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage[latin1]{inputenc}
+\usepackage[swedish,english]{babel}
+\usepackage{modifications}
+\title{Binning
+       Metagenomics}
+
+\subtitle{Lots of Binning}
+\foreigntitle{Svensk titel едц}
+\author{Johannes Alneberg}
+\date{Juni 2013}
+\blurb{Master's Thesis at NADA\\Supervisor: Anders Andersson\\Examiner: Tjohej}
+\trita{TRITA xxx yyyy-nn}
+\begin{document}
+
+\frontmatter
+\pagestyle{empty}
+\removepagenumbers
+\maketitle
+\selectlanguage{english}
+\begin{abstract}
+  English abstract
+
+\end{abstract}
+\clearpage
+\begin{foreignabstract}{swedish}
+Sammanfattning pе svenska. едц
+\end{foreignabstract}
+\clearpage
+\tableofcontents*
+\mainmatter
+\pagestyle{newchap}
+\include{introduction}
+\include{theory}
+\include{results}
+\include{discussion}
+
+\bibliographystyle{apalike}
+\bibliography{library}
+
+\appendix
+\addappheadtotoc
+\chapter{RDF}\label{appA}
+
+\begin{figure}[ht]
+\begin{center}
+And here is a figure
+\caption{\small{Several statements describing the same resource.}}\label{RDF_4}
+\end{center}
+\end{figure}
+\cite{Hess2011a}
+that we refer to here: \ref{RDF_4}
+\end{document}
