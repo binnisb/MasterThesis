@@ -1,0 +1,178 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{tabularx}
+%\usepackage{mathpazo}
+\usepackage[hmargin=8em,vmargin=8em]{geometry}
+\usepackage{enumerate}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{mathrsfs}
+
+%New definition of square root:
+% it renames \sqrt as \oldsqrt
+\let\oldsqrt\sqrt
+% it defines the new \sqrt in terms of the old one
+\def\sqrt{\mathpalette\DHLhksqrt}
+\def\DHLhksqrt#1#2{%
+\setbox0=\hbox{$#1\oldsqrt{#2\,}$}\dimen0=\ht0
+\advance\dimen0-0.2\ht0
+\setbox2=\hbox{\vrule height\ht0 depth -\dimen0}%
+{\box0\lower0.4pt\box2}}
+
+\newcommand{\listfile}[1]{\lstset{caption=#1,basicstyle=\small, breaklines=true, breakatwhitespace=false}
+  \lstinputlisting{#1}}
+\lstset{language=R, frame=single, breaklines=true}
+
+\newcommand{\lp}{\left (}
+\newcommand{\rp}{\right )}
+
+\begin{document}
+
+\title {\onehalfspacing Project specification \\ \singlespacing Implementing a Statistical Model for Clustering Metagenomic Contigs by Parallel Computing and Test Driven Development}
+\author{Brynjar Smári Bjarnason\\Computational and Systems Biology\\ School of Computer Science and Communication\\KTH Royal Institute of Technology \\ \\ 
+        CSC Supervisor: Jens Lagergren\\School of Computer Science and Communication \\ KTH Royal Institute of Technology\\ \\
+        Supervisor: Anders Andersson\\School of Biotechnology \\ KTH Royal Institute of Technology\\ \\
+        Co-supervisor: Christopher Quince\\School of Engineering\\University of Glasgow}
+
+\maketitle
+\pagebreak
+\section*{The Problem}
+Metagenomics, or environmental genomics, is the exploration of microbial communities by sequencing environmental samples. For modern genomic research, the use of massive parallel sequencing has made the data processing step time consuming and difficult. This is especially the case for metagenomics where each sample contains a multitude of organisms and multiple samples are used to detect trends or differences over various conditions. To estimate the constitution and diversity of the microbial community studied, the raw sequence data needs to be divided into clusters, a procedure called clustering or binning. The binning procedure can take on either of two approaches, clustering reads or clustering contigs. Contigs are formed by assemblers that piece together overlapping short reads into longer sequences. The problem complexity decreases if reliable contigs are available to the clustering, since the assembly step also decreases data size significantly. Several assemblers dedicated for metagenomic data now exists, indicating the possibility to focus efforts on clustering of contigs instead of reads.
+
+The information used by current clustering algorithm is mainly based on genome signatures and sequence homology. The steady increase in throughput and decrease in cost of sequencing have enabled the possibility to sequence multiple samples simultaneously. This provides additional information that could be used in the clustering process, namely the different abundances in different samples. Contigs belonging to the same cluster should under normal circumstances have the same kind of abundance-pattern over all samples.
+
+Furthermore, most algorithms developed for binning are based on heuristics as opposed to a probabilistic modeling approach. Heuristic algorithms may very well offer some great performance but lack in rigidity and possibilities of interpreting the results. If a proper statistical model is the basis for the algorithm, this enables the use of a statistics toolbox developed by researchers for analyzing the properties of the algorithm. 
+
+The problem statement with respect to taxonomic levels might differ between settings, sometimes it is sufficient to cluster the data into bins corresponding to families, while at other settings it is desirable to go down to species or even strains. It is supposedly easier to separate higher taxonomic levels from each other. 
+
+Clustering metagenomic data is a problem hard to solve. The microbial communities are often large and diverse and have a high ratio between the highest and the lowest abundant organism. This results in a low signal to noise ratio for the lower abundance organisms making accurate predictions difficult. The small difference in genomic composition between strains of the same species further complicates the clustering down to this ultimate precision.
+
+\section*{Goal}
+
+With this project the aim is to explore ways to efficiently and accurately cluster metagenomic contigs into taxonomy level based on the underlying mathematical models. Different clustering algorithms will be considered and compared such as Expectation-Maximization (EM), K-Means and others. Mathematical models, which are provided, will be implemented. The clustering and model implementations will be analyzed and optimized for parallel execution on high performance computing clusters. This is expected to be necessary given the size and complexity of the data and probability calculations respectively.
+
+Some clustering algorithms do not work well with high dimensional data. The data for this project is expected to be high dimensional so the need for some dimension reduction or other ways to simplify the data will be investigated. 
+\pagebreak
+\section*{Reading List}
+The focus will be on clustering algorithms, specially on the EM. As the project progresses the aim is to look at other algorithms and compare efficiency and quality to the EM. Since all this process will be computationally expensive, parallel computing and optimization will be in focus as well.
+\subsection*{High performance computing \& Clustering methods}
+
+\begin{tabularx}{\linewidth}{>{\itshape}X |p{5cm}}
+Parallel Clustering Algorithm for Large Data Sets with Applications in Bioinformatics & \cite{Olman2009} \\
+
+The Binning of Metagenomic Contigs for Microbial Physiology of Mixed Cultures & \cite{Strous2012}\\
+
+Removing Noise From Pyrosequenced Amplicons & \cite{Quince2011}\\
+
+MetaCluster 5.0: a two-round binning approach for metagenomic data for low-abundance species in a noisy sample & \cite{Wang2012_5}\\
+
+MetaCluster 4.0: a novel binning algorithm for NGS reads and huge number of species & \cite{Wang2012_4}\\
+
+A robust and accurate binning algorithm for metagenomic sequences with arbitrary species abundance ratio & \cite{Leung2011}\\
+
+A Parallel K-Means Clustering Algorithm with MPI & \cite{Zhang2011}\\
+
+High-Dimensional Clustering with Sparse Gaussian Mixture Models (Unpublished) & \cite{Krishnamurthya}\\
+
+Fast Parallel Markov Clustering in Bioinformatics using Massively Parallel Computing on GPU with CUDA and ELLPACK-R Sparse Format & \cite{Bustamam2011} \\
+
+Unsupervised two-way clustering of metagenomic sequences & \cite{Prabhakara2012}\\
+
+Clustering metagenomic sequences with interpolated Markov models & \cite{Kelley2010}\\
+
+Practical application of self-organizing maps to interrelate biodiversity and functional data in NGS-based metagenomics & \cite{Weber2011}\\
+
+
+\end{tabularx}
+
+\subsection*{Metagenomics}
+
+\begin{tabularx}{\linewidth}{>{\itshape}X | p{5cm}}
+A human gut microbial gene catalogue established by metagenomic sequencing & \cite{Qin2010}\\
+
+A primer on metagenomics & \cite{Wooley2010}\\
+
+Microbiology: Metagenomics \cite{Hugenholtz2008}\\
+
+Application of tetranucleotide frequencies for the assignment of genomic fragments & \cite{Teeling2004a}\\
+
+Community-wide analysis of microbial genome sequence signatures & \cite{Dick2009}\\
+
+Accurate phylogenetic classification of variable-length DNA fragments & \cite{McHardy2007}\\
+
+A novel abundance-based algorithm for binning metagenomic sequences using l-tuples & \cite{Wu2011}\\
+
+\end{tabularx}
+
+\section*{Methods}
+
+Test driven development (TDD) will be applied for the implementations. Each mathematical model and clustering algorithm will be implemented and analyzed for memory and execution efficiency. Each implementation will be examined for possibility of parallelization.
+
+\pagebreak
+
+\section*{Delimitation}
+
+Development of the mathematical models will not be examined here.
+
+\section*{Time Plan}
+\begin{tabularx}{\linewidth}{| l | X |}
+\hline
+Week & Task\\
+\hline
+3 & Meet the group, get to know the problem \\
+
+4 & Administrative work, reading \\
+
+5 & Administrative work, reading \\
+
+6 & Reading \\
+
+7 & Vacation \\
+
+8 & Implement and analyze modeling composition \\
+
+9 & Read about clustering methods \\
+
+10 & Read amd design clustering algorithm\\
+
+11 & Implement clustering algorithm \\
+
+12 & Implement clustering algorithm \\
+
+13 & Vacation \\
+
+14 & Implement and analyze Covariance \\
+
+15 & Analyze and optimize\\
+
+16 & Analyze, optimize while working with real data  \\	
+
+17 & Analyze, optimize while working with real data \\
+
+18 & Write report \\
+
+19 & Write report  \\
+
+20 & Write report \\
+
+21 & Write report \\
+
+22 & Write report \\
+
+23 & Write report \\
+
+24 & Write report \\
+
+25 & Defend thesis  \\
+\hline
+\end{tabularx}
+
+\bibliographystyle{apalike}
+\bibliography{../library}
+\end{document}
